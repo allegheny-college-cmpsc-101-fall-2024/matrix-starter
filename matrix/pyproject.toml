@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "matrix"
+version = "0.1.0"
+description = ""
+authors = ["Gregory M. Kapfhammer <gkapfham@allegheny.edu>"]
+
+[tool.poetry.scripts]
+matrix = "matrix.main:cli"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+rich = "^13.9.3"
+tabulate = "^0.9.0"
+types-tabulate = "^0.9.0.20240106"
+typer = "^0.12.5"
+ruff = "^0.7.1"
+mypy = "^1.13.0"
+
+[tool.poetry.dev-dependencies]
+taskipy = "^1.8.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^4.0.0"
+pymarkdownlnt = "^0.9.11"
+
+[tool.taskipy.tasks]
+ruff = { cmd = "ruff check --preview --output-format=concise", help = "Run the ruff checks for source code format and linting" }
+fix = { cmd = "ruff check --fix", help = "Fix the fixable ruff errors in source code format" }
+ruffdetails = { cmd = "ruff check --preview", help = "Run the ruff checks for source code format and linting" }
+markdownlint = { cmd = "poetry run pymarkdown --config .pymarkdown.cfg scan ../writing/reflection.md ../README.md", help = "Run the markdown linter on writing" }
+mypy = { cmd = "poetry run mypy matrix", help = "Run the mypy type checker for potential type errors" }
+all = "task ruff && task markdownlint && task mypy && task test"
+test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }
+test-silent = { cmd = "pytest -x --show-capture=no", help = "Run the pytest test suite without showing output" }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
